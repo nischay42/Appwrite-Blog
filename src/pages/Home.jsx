@@ -9,7 +9,7 @@ function Home() {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
-        const getPost = JSON.parse(localStorage.getItem('activePost'))
+        const getPost = JSON.parse(sessionStorage.getItem('activePost'))
         if (getPost) {
             setPosts(getPost);
         } else{
@@ -18,12 +18,6 @@ function Home() {
           })
         }
       }, [])
-
-    //   const getPost = JSON.parse(localStorage.getItem('allPost'))
-    //   getPost.forEach(post => {
-    //     console.log(post.$id)
-    //   });
-
 
     if(!state){
         return (

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import authService from "../appwrite/auth";
 import appwriteService from "../appwrite/config";
 import { Link, useNavigate } from "react-router-dom";
-import {allPosts as pp} from '../store/postSlice'
 import { login } from "../store/authSlice";
 import { Logo, Button, Input } from "./index";
 import { useDispatch } from "react-redux";
@@ -21,13 +20,16 @@ function Signup() {
       if (userData) {
         const userDataa = await authService.getCurrentUser();
         if (userDataa){
+
+         localStorage.setItem('UserData', JSON.stringify(userData))
+
          dispatch(login(userData));
 
          appwriteService.getPosts().then((posts) => {
-          localStorage.setItem('activePost', JSON.stringify(posts.documents))
+          sessionStorage.setItem('activePost', JSON.stringify(posts.documents))
          })
          appwriteService.getPost([]).then((posts) => {
-          localStorage.setItem('allPost', JSON.stringify(posts.documents))
+          sessionStorage.setItem('allPost', JSON.stringify(posts.documents))
          })
         }
         navigate("/");

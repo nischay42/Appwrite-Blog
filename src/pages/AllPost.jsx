@@ -6,7 +6,7 @@ function AllPost() {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
-      const getPost = JSON.parse(localStorage.getItem('allPost'))
+      const getPost = JSON.parse(sessionStorage.getItem('allPost'))
       if (getPost) {
           setPosts(getPost);
       } else{

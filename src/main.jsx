@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { Provider } from 'react-redux'
-import store from './store/store.js'
+import store  from './store/store.js'
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
 import {Home, Signup, AllPost, AddPost, EditPost, Post, Login} from './pages/index.js'
 import { AuthLayout } from './components/index.js'
@@ -13,8 +13,6 @@ const router = createBrowserRouter(
     <Route path='/' element={<App />}>
 
         <Route path='/' element={<Home />} >
-            {/* <Route path='post/:slug' element={<Post />} />
-             */}
         </Route>
 
         <Route path='/login' element={(
@@ -35,7 +33,6 @@ const router = createBrowserRouter(
             <AllPost />
           </AuthLayout>
         )} >
-            {/* <Route path='/post/:slug' element={<Post />} /> */}
         </Route>
 
         <Route path='/add-post' element={(
@@ -121,7 +118,7 @@ const router = createBrowserRouter(
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-    <RouterProvider router={router} />
+        <RouterProvider router={router} />
     </Provider>
   </StrictMode>,
 )

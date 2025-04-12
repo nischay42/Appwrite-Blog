@@ -18,18 +18,22 @@ function Login() {
         try{
             const session = await authService.login(data)
             if(session){
+
             const userData = await authService.getCurrentUser()
+
             if(userData){
-             dispatch(authLogin(userData));
+
+             localStorage.setItem('UserData', JSON.stringify(userData))
+             
+             dispatch(authLogin(userData)); 
 
              appwriteService.getPosts().then((posts) => {
-                 localStorage.setItem('activePost', JSON.stringify(posts.documents))
+                 sessionStorage.setItem('activePost', JSON.stringify(posts.documents))
              })
              appwriteService.getPost([]).then((posts) => {
-                 localStorage.setItem('allPost', JSON.stringify(posts.documents))
+                 sessionStorage.setItem('allPost', JSON.stringify(posts.documents))
              })
             }
-
             
                 navigate('/')
             }

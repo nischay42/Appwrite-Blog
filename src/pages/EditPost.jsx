@@ -8,18 +8,25 @@ function EditPost() {
     const [post, setPosts] = useState(null)
     const {slug} = useParams()
     const navigate = useNavigate()
+    let NotInLocal = true;
 
     useEffect(() => {
-        if(slug){
-         appwriteService.getPost(slug).then((post) => {
-            if(post){
-                setPosts(post)
+        if (slug) {
+          const getPost = JSON.parse(sessionStorage.getItem("allPost"));
+          getPost.forEach((post) => {
+            if (post.$id === slug) {
+              NotInLocal = false;
+              setPosts(post);
             }
-            })   
-        } else{
-            navigate('/')
-        }
-    }, [slug, navigate])
+          });
+          if (NotInLocal) {
+            appwriteService.getPost(slug).then((post) => {
+              if (post) setPosts(post);
+              else navigate("/");
+            });
+          }
+        } else navigate("/");
+      }, [slug, navigate]);
 
   return post ? (
     <div  className='py-8'>

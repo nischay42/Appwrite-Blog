@@ -77,6 +77,36 @@ export class Service {
     }
   }
 
+  // async getPost(limit = 20, offset = 0) {
+  //   try {
+  //     return await this.databases.listDocuments(
+  //       conf.appwriteDatabaseId,
+  //       conf.appwriteCollectionId,
+  //       [
+  //         Query.limit(limit),
+  //         Query.offset(offset)
+  //       ]
+  //     );
+  //   } catch (error) {
+  //     console.log("Appwrite service :: getPost :: error", error);
+  //     return false;
+  //   }
+  // }
+
+  // async getPost(queries = [Query.limit(100), Query.offset(0)]) {
+  //   try {
+  //     return await this.databases.listDocuments(
+  //       conf.appwriteDatabaseId,
+  //       conf.appwriteCollectionId,
+  //       queries
+  //     );
+  //   } catch (error) {
+  //     console.log("Appwrite service :: getPost :: error", error);
+  //     return false;
+  //   }
+  // }
+  
+
   async getPosts(queries = [Query.equal("status", "active")]) {
     try {
       return await this.databases.listDocuments(
@@ -119,12 +149,12 @@ export class Service {
   }
 
   getFilePreview(fileID){
-    return this.bucket.getFilePreview(
+    return this.bucket.getFileView(
         conf.appwriteBucketId,
         fileID
     )
   }
 }
 
-const service = new Service();
-export default service;
+const appwriteService = new Service();
+export default appwriteService;
