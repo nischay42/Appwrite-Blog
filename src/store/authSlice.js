@@ -11,7 +11,7 @@ const authSlice = createSlice({
     reducers: {
         login: (state, action) => {
             state.status = true;
-            // state.userData = JSON.parse(localStorage.getItem('UserData'))
+            state.userData = JSON.parse(localStorage.getItem('UserData'))
         },
         logout: (state) => {
             state.status = false;
