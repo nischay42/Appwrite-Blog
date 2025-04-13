@@ -7,10 +7,10 @@ import { useSelector } from "react-redux";
 
 function Post() {
   const [post, setPost] = useState(null);
+  const [isImageZoomed, setIsImageZoomed] = useState(false);
   const { slug } = useParams();
   const navigate = useNavigate();
   let NotInLocal = true;
-
 
   const userData = useSelector((state) => state.auth.userData);
 
@@ -19,7 +19,7 @@ function Post() {
   useEffect(() => {
     if (slug) {
       const getPost = JSON.parse(sessionStorage.getItem("allPost"));
-      if(getPost){
+      if (getPost) {
         getPost.forEach((post) => {
           if (post.$id === slug) {
             NotInLocal = false;
@@ -27,7 +27,7 @@ function Post() {
           }
         });
       }
-    
+
       if (NotInLocal) {
         appwriteService.getPost(slug).then((post) => {
           if (post) setPost(post);
@@ -41,7 +41,6 @@ function Post() {
     appwriteService.deletePost(post.$id).then((status) => {
       if (status) {
         appwriteService.deleteFile(post.featuredImage);
-        // To update catch and remove deleted post
         appwriteService.getPosts().then((posts) => {
           sessionStorage.setItem("activePost", JSON.stringify(posts.documents));
           navigate("/");
@@ -56,15 +55,34 @@ function Post() {
   return post ? (
     <div className="w-full py-8">
       <Container>
+        {isImageZoomed && (
+          <div
+            className="fixed inset-0  bg-[#000000c2] flex justify-center items-center z-50"
+            onClick={() => setIsImageZoomed(false)} 
+          >
+            <div className="max-w-[90vw] max-h-[90vh] z-60 rounded-lg transform scale-110 transition-transform duration-300 cursor-pointer overflow-hidden">
+              <img
+                src={appwriteService.getFilePreview(post.featuredImage)}
+                alt={post.title}
+                className="max-w-[80vw] max-h-[80vh]"
+                onClick={(e) => e.stopPropagation()} // Prevent closing when clicking on the image
+              />
+            </div>
+          </div>
+        )}
+
         <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
           <img
             src={appwriteService.getFilePreview(post.featuredImage)}
             alt={post.title}
-            className="rounded-xl max-h-[20rem]"
+            className="rounded-xl max-h-[26rem] cursor-pointer"
+            onClick={() => setIsImageZoomed(true)} 
           />
-
+        </div>
+        <div className="w-full mb-6  inline-flex place-content-between">
+          <h1 className="text-2xl font-bold">{post.title}</h1>
           {isAuthor && (
-            <div className="absolute right-6 top-6">
+            <div className="">
               <Link to={`/edit-post/${post.$id}`}>
                 <Button bgColor="bg-green-500" className="mr-3">
                   Edit
@@ -75,9 +93,6 @@ function Post() {
               </Button>
             </div>
           )}
-        </div>
-        <div className="w-full mb-6">
-          <h1 className="text-2xl font-bold">{post.title}</h1>
         </div>
         <div className="browser-css">{parse(post.content)}</div>
       </Container>

@@ -43,7 +43,9 @@ export default function PostForm({ post }) {
                 }  
             }, '1000')
 
-        } else{
+        } 
+      
+        else{
 
             if(data.image[0] &&  userData) {
                 const file = await appwriteService.uploadFile(data.image[0]);
@@ -104,7 +106,6 @@ export default function PostForm({ post }) {
                     label="Title :"
                     placeholder="Title"
                     className="mb-4"
-                    required
                     {...register("title", { required: true })}
                 />
                 <Input
@@ -123,7 +124,6 @@ export default function PostForm({ post }) {
                     type="file"
                     className="mb-4"
                     accept="image/png, image/jpg, image/jpeg, image/gif"
-                    required
                     {...register("image", { required: !post })}
                 />
                 {/* {post && (

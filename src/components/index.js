@@ -12,6 +12,7 @@ import AuthLayout from './AuthLayout'
 import Input from "./Input";
 import Button from "./Button";
 import Select from "./Select";
+import ScrollManager from "./ScrollManager";
 
 export {
     Header,
@@ -28,4 +29,5 @@ export {
     Input,
     Button,
     Select,
+    ScrollManager
 }

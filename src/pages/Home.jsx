@@ -9,9 +9,7 @@ function Home() {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
-        if(state){
-            const getPost = JSON.parse(sessionStorage.getItem('activePost'))
-        
+        const getPost = JSON.parse(sessionStorage.getItem('activePost'))
         if (getPost) {
             setPosts(getPost);
         } else{
@@ -19,7 +17,6 @@ function Home() {
               setPosts(posts.documents)
           })
         }
-    }
       }, [])
 
     if(!state){

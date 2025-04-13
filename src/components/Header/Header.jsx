@@ -36,10 +36,10 @@ function Header() {
         }
     ]
   return (
-   <header className='py-3 shadow sticky top-0 z-10 bg-gray-500'>
+   <header className='py-3 shadow sticky top-0 z-30 bg-gray-500'>
     <Container>
         <nav className='flex'>
-            <div className='mr-4'>
+            <div className='mr-2 md:mr-4'>
                 <Link to='/'>
                     <Logo  width='70px'/>
 
@@ -50,13 +50,22 @@ function Header() {
                 item.active ? (
                     <li key={item.name}>
                         <button
-                        onClick={() => navigate(item.slug)}
-                        className='inline-block px-4 py-2 md:px-6 duration-200 hover:bg-blue-100 rounded-full'
-                        >{item.name}</button>
+  onClick={() => {
+    // Reset scroll manually for only Home and All Posts
+    if (item.slug === '/' || item.slug === '/all-posts') {
+      sessionStorage.setItem('manualScrollReset', 'true');
+    }
+    navigate(item.slug);
+  }}
+  className='inline-block px-[1.9vw] py-2 md:px-6 duration-200 hover:bg-blue-100 rounded-full'
+>
+  {item.name}
+</button>
+
                     </li>
                 ) : null
                 )}
-                {authStatus && (
+                { authStatus &&(
                     <li>
                         <LogoutBtn />
                     </li>
