@@ -5,18 +5,14 @@ import App from './App.jsx'
 import { Provider } from 'react-redux'
 import store  from './store/store.js'
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
-import {Home, Signup, AllPost, AddPost, EditPost, Post, Login} from './pages/index.js'
+import {Home, Signup, MyPosts, AddPost, EditPost, Post, Login, InactivePost} from './pages/index.js'
 import { AuthLayout } from './components/index.js'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
 
-        <Route path='/'  element={<Home />}
-        >
-         
-        
-        </Route>
+        <Route path='/'  element={<Home />} />
 
         <Route path='/login' element={(
           <AuthLayout authentication={false}>
@@ -30,10 +26,18 @@ const router = createBrowserRouter(
           </AuthLayout>
         )} />
 
-        <Route path='/all-posts' element={(
+        <Route path='/my-posts' element={(
           <AuthLayout authentication>
             {" "}
-            <AllPost />
+            <MyPosts />
+          </AuthLayout>
+        )} >
+        </Route>
+
+        <Route path='/inactive-posts' element={(
+          <AuthLayout authentication>
+            {" "}
+            <InactivePost />
           </AuthLayout>
         )} >
         </Route>

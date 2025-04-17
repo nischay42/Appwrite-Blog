@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const SCROLL_PAGES = ['/', '/all-posts'];
+const SCROLL_PAGES = ['/', '/my-posts'];
 
 const ScrollManager = () => {
   const location = useLocation();

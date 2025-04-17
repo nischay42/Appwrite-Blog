@@ -6,6 +6,7 @@ import { login } from "../store/authSlice";
 import { Logo, Button, Input } from "./index";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
+import { FaTimes } from "react-icons/fa";
 
 function Signup() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ function Signup() {
          dispatch(login(userData));
 
          appwriteService.getPosts().then((posts) => {
-          sessionStorage.setItem('activePost', JSON.stringify(posts.documents))
+          sessionStorage.setItem('userPost', JSON.stringify(posts.documents))
          })
          appwriteService.getPost([]).then((posts) => {
           sessionStorage.setItem('allPost', JSON.stringify(posts.documents))
@@ -42,8 +43,17 @@ function Signup() {
   return (
     <div className="flex items-center justify-center">
       <div
-        className={`mx-auto w-full max-w-lg bg-gray-100 p-8 rounded-xl border border-black/10`}
-      >
+        className={`mx-auto w-full max-w-lg bg-gray-100 p-8 rounded-xl border border-black/10`}>
+          {/* close button X */}
+        <div className='text-2xl flex justify-end m-[0.8rem]'>
+          <button
+          onClick={() => navigate('/')}
+          className='cursor-pointer'
+          >
+          <FaTimes className='mt-[-1.4rem] mr-[-1rem]' />
+          </button>
+        </div>
+
         <div className="mb-2 flex justify-center">
           <span className="inline-block w-full max-w-[100px]">
             <Logo width="100%" />

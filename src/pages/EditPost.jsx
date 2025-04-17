@@ -12,19 +12,22 @@ function EditPost() {
 
     useEffect(() => {
         if (slug) {
-          const getPost = JSON.parse(sessionStorage.getItem("allPost"));
-          getPost.forEach((post) => {
+          const getPost = sessionStorage.getItem("userPost");
+          if(getPost != 'undefined' && getPost){
+            JSON.parse(getPost).forEach((post) => {
             if (post.$id === slug) {
               NotInLocal = false;
               setPosts(post);
             }
           });
-          if (NotInLocal) {
-            appwriteService.getPost(slug).then((post) => {
-              if (post) setPosts(post);
-              else navigate("/");
-            });
-          }
+        }
+        if (NotInLocal) {
+          appwriteService.getSlugPost(slug).then((post) => {
+            if (post) setPosts(post);
+            else navigate("/");
+          });
+        }
+          
         } else navigate("/");
       }, [slug, navigate]);
 

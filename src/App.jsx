@@ -29,13 +29,13 @@ function App() {
   const userData = useSelector((state) => state.auth.userData);
   useEffect(() => {
         if(userData != null){
-          // Fetch and set activePost
-          appwriteService.getPosts().then((posts) => {
-            sessionStorage.setItem('activePost', JSON.stringify(posts.documents));
+          // Fetch and set userPost
+          appwriteService.getPosts(userData.$id).then((posts) => {
+            sessionStorage.setItem('userPost', JSON.stringify(posts.documents));
           });
           
           // Fetch and set allPost
-          appwriteService.getPost([]).then((posts) => {
+          appwriteService.getPost().then((posts) => {
             sessionStorage.setItem('allPost', JSON.stringify(posts.documents));
           });
         }
@@ -44,7 +44,7 @@ function App() {
   
   return !loading ? (
     <div className='min-h-screen flex flex-wrap content-between bg-gray-400'>
-      <div className='w-full block '>
+      <div className='w-full block'>
         <Header />
         <ScrollManager />
         <main>

@@ -30,10 +30,10 @@ export default function PostForm({ post }) {
                 featuredImage: file ? file.$id : undefined,
             });
 
-            appwriteService.getPosts().then((posts) => {
-                sessionStorage.setItem('activePost', JSON.stringify(posts.documents))
+            appwriteService.getPosts(userData.$id).then((posts) => {
+                sessionStorage.setItem('userPost', JSON.stringify(posts.documents))
             })
-            appwriteService.getPost([]).then((posts) => {
+            appwriteService.getPost().then((posts) => {
                 sessionStorage.setItem('allPost', JSON.stringify(posts.documents))
             })
 
@@ -53,10 +53,10 @@ export default function PostForm({ post }) {
                 data.featuredImage = fileId
                 const dbPost = await appwriteService.createPost({ ...data, userId: userData.$id,});
 
-                appwriteService.getPosts().then((posts) => {
-                    sessionStorage.setItem('activePost', JSON.stringify(posts.documents))
+                appwriteService.getPosts(userData.$id).then((posts) => {
+                    sessionStorage.setItem('userPost', JSON.stringify(posts.documents))
                 })
-                appwriteService.getPost([]).then((posts) => {
+                appwriteService.getPost().then((posts) => {
                     sessionStorage.setItem('allPost', JSON.stringify(posts.documents))
                 })
                 

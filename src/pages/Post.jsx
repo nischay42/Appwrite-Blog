@@ -18,20 +18,21 @@ function Post() {
 
   useEffect(() => {
     if (slug) {
-      const getPost = JSON.parse(sessionStorage.getItem("allPost"));
-      if (getPost) {
-        getPost.forEach((post) => {
+      const getPost = sessionStorage.getItem("allPost");
+      if (getPost != 'undefined' && getPost) {
+        JSON.parse(getPost).forEach((post) => {
           if (post.$id === slug) {
             NotInLocal = false;
             setPost(post);
           }
         });
       }
-
       if (NotInLocal) {
-        appwriteService.getPost(slug).then((post) => {
-          if (post) setPost(post);
-          else navigate("/");
+        appwriteService.getSlugPost(slug).then((post) => {
+          if (post)setPost(post);
+            else{ navigate("/");
+        }
+          
         });
       }
     } else navigate("/");
@@ -42,15 +43,16 @@ function Post() {
       if (status) {
         appwriteService.deleteFile(post.featuredImage);
         appwriteService.getPosts().then((posts) => {
-          sessionStorage.setItem("activePost", JSON.stringify(posts.documents));
+          sessionStorage.setItem("userPost", JSON.stringify(posts.documents));
           navigate("/");
         });
-        appwriteService.getPost([]).then((posts) => {
+        appwriteService.getPost().then((posts) => {
           sessionStorage.setItem("allPost", JSON.stringify(posts.documents));
         });
       }
     });
   };
+
 
   return post ? (
     <div className="w-full py-8">
@@ -82,7 +84,7 @@ function Post() {
         <div className="w-full mb-6  inline-flex place-content-between">
           <h1 className="text-2xl font-bold">{post.title}</h1>
           {isAuthor && (
-            <div className="">
+            <div>
               <Link to={`/edit-post/${post.$id}`}>
                 <Button bgColor="bg-green-500" className="mr-3">
                   Edit

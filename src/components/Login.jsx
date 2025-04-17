@@ -6,6 +6,7 @@ import authService from '../appwrite/auth'
 import appwriteService from '../appwrite/config'
 import {useForm} from 'react-hook-form'
 import { useDispatch } from 'react-redux'
+import { FaTimes } from "react-icons/fa";
 
 function Login() {
     const navigate = useNavigate()
@@ -27,10 +28,10 @@ function Login() {
              
              dispatch(authLogin(userData)); 
 
-             appwriteService.getPosts().then((posts) => {
-                 sessionStorage.setItem('activePost', JSON.stringify(posts.documents))
+             appwriteService.getPosts(userData.$id).then((posts) => {
+                 sessionStorage.setItem('userPost', JSON.stringify(posts.documents))
              })
-             appwriteService.getPost([]).then((posts) => {
+             appwriteService.getPost().then((posts) => {
                  sessionStorage.setItem('allPost', JSON.stringify(posts.documents))
              })
             }
@@ -45,6 +46,14 @@ function Login() {
   return (
     <div className='flex items-center justify-center w-full'>
         <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
+        <div className='text-2xl flex justify-end m-[0.8rem]'>
+            <button
+            onClick={() => navigate('/')}
+            className='cursor-pointer'
+            >
+            <FaTimes className='mt-[-1.9rem] mr-[-1.9rem]' />
+            </button>
+        </div>
             <div className='mb-2 flex justify-center'>
                 <span className='inline-block w-full max-w-[100px]'>
                     <Logo width='100%' />

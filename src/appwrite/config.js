@@ -32,6 +32,7 @@ export class Service {
       console.log("Apprite service :: createPost :: error", error);
     }
   }
+
   async updatePost(slug, { title, content, featuredImage, status }) {
     try {
       return await this.databases.updateDocument(
@@ -64,7 +65,7 @@ export class Service {
     }
   }
 
-  async getPost(slug) {
+  async getSlugPost(slug) {
     try {
       return await this.databases.getDocument(
         conf.appwriteDatabaseId,
@@ -72,50 +73,45 @@ export class Service {
         slug
       )
     } catch (error) {
-      console.log("Apprite service :: getPost :: error", error);
+      console.log("Apprite service :: getSlugPost :: error", error);
       return false;
     }
   }
 
-  // async getPost(limit = 20, offset = 0) {
-  //   try {
-  //     return await this.databases.listDocuments(
-  //       conf.appwriteDatabaseId,
-  //       conf.appwriteCollectionId,
-  //       [
-  //         Query.limit(limit),
-  //         Query.offset(offset)
-  //       ]
-  //     );
-  //   } catch (error) {
-  //     console.log("Appwrite service :: getPost :: error", error);
-  //     return false;
-  //   }
-  // }
+  async getPosts(userId = null, limit = 15, offset = 0) {
+    try {
+      const filter = [
+          Query.limit(limit),
+          Query.offset(offset)
+      ];
 
-  // async getPost(queries = [Query.limit(100), Query.offset(0)]) {
-  //   try {
-  //     return await this.databases.listDocuments(
-  //       conf.appwriteDatabaseId,
-  //       conf.appwriteCollectionId,
-  //       queries
-  //     );
-  //   } catch (error) {
-  //     console.log("Appwrite service :: getPost :: error", error);
-  //     return false;
-  //   }
-  // }
-  
+      if(userId){
+        filter.push(Query.equal('userId', userId))
+      }
+      return await this.databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        filter
+      );
+    } catch (error) {
+      console.log("Apprite service :: getPosts :: error", error);
+      return false;
+    }
+  }
 
-  async getPosts(queries = [Query.equal("status", "active")]) {
+  async getPost(limit = 15, offset = 0) {
     try {
       return await this.databases.listDocuments(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
-        queries
-      )
+        [
+          Query.equal("status", "active"),
+          Query.limit(limit),
+          Query.offset(offset),
+        ]
+      );
     } catch (error) {
-      console.log("Apprite service :: getPosts :: error", error);
+      console.log("Appwrite service :: getPost :: error", error);
       return false;
     }
   }
